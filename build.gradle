@@ -1,6 +1,7 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
+        maven { url "http://repo.spring.io/libs-snapshot" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE")
@@ -11,7 +12,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
-
+apply plugin: 'war'
 
 jar {
     baseName = 'clippy-platform'
@@ -22,22 +23,21 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    providedRuntime
+}
+
 dependencies {
-    // tag::jetty[]
-    compile("org.springframework.boot:spring-boot-starter-web") {
-        exclude module: "spring-boot-starter-tomcat"
-    }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-    // end::jetty[]
-    // tag::actuator[]
+    compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
     compile("org.springframework:spring-tx")
     compile("org.springframework:spring-jdbc")
 
     compile("org.dalesbred:dalesbred:1.0.0")
     compile("org.hsqldb:hsqldb")
-    // end::actuator[]
     testCompile("junit:junit")
 }
 
