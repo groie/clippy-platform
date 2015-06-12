@@ -8,7 +8,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
@@ -22,9 +21,6 @@ jar {
 repositories {
     mavenCentral()
 }
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 dependencies {
     // tag::jetty[]
