@@ -37,8 +37,7 @@ public class NoteDB {
             throw new IllegalArgumentException("Trying to update old version");
         } else {
             int updates = database.update("UPDATE note SET value = ?, version = ? WHERE key = ? and version = ?", note.getValue(), note.getVersion().intValue() + 1, note.getKey(), note.getVersion());
-            throw new RuntimeException("foo");
-            //return getNote(note.getKey());
+            return getNote(note.getKey());
         }
     }
 
