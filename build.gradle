@@ -8,16 +8,43 @@ buildscript {
     }
 }
 
+plugins {
+    id "fi.evident.beanstalk" version "0.0.5"
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
 apply plugin: 'war'
 
+def bn = 'clippy-platform'
+def ver = '0.1.2'
+
 jar {
-    baseName = 'clippy-platform'
-    version =  '0.1.0'
+    baseName = bn
+    version =  ver
 }
+
+war {
+    baseName = bn
+    version =  ver
+}
+
+beanstalk {
+    profile = 'clippy-platform'
+    s3Endpoint = "s3-us-west-2.amazonaws.com"
+    beanstalkEndpoint = "elasticbeanstalk.us-west-2.amazonaws.com"
+
+    deployments {
+        production {
+            war = tasks.war
+            application = 'Clippy-platform'
+            environment = 'clippyPlatform-env'
+        }
+    }
+}
+
 
 repositories {
     mavenCentral()
