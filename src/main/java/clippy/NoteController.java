@@ -16,6 +16,11 @@ public class NoteController {
     @Autowired
     private NoteDB noteDB;
 
+    @RequestMapping(value = "/", method = GET)
+    public String welcome() {
+        return "Welcome to Clippy";
+    }
+
     @RequestMapping(value = "/{key}", method = GET)
     public Note getNote(@PathVariable("key") String key) {
         Note note = noteDB.getNote(key);
