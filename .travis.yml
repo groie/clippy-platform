@@ -5,3 +5,8 @@ cache:
   directories:
   - $HOME/.m2
   - $HOME/.gradle/caches/
+
+after_success:
+  - if [ ! -d "~/.aws" ]; then mkdir ~/.aws; fi
+  - printf "[clippy-platform]\naws_access_key_id=$aws_access_key_id\naws_secret_access_key=$aws_secret_access_key\n" > ~/.aws/credentials
+  - ./gradlew deployProduction
