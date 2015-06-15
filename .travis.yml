@@ -7,4 +7,4 @@ cache:
   - $HOME/.gradle/caches/
 
 after_success:
-  - test ${TRAVIS_BRANCH} = master && ./gradlew deployProduction
+  - test ${TRAVIS_BRANCH} = master && ./gradlew deployProduction --stacktrace
