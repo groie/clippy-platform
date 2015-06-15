@@ -45,4 +45,8 @@ public class NoteDB {
         return database.findUniqueOrNull(Note.class, "select key, value, version from note where key = ?", key);
     }
 
+    public int deleteAll() {
+        return database.update("DELETE FROM note");
+    }
+
 }

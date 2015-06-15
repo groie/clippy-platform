@@ -32,6 +32,11 @@ class RestNoteControllerSpec extends Specification {
         baseUrl = "${urlPrefix}:${port}${path}"
     }
 
+    void cleanup() {
+        // TODO: setup transactional tests when the DB is extracted from the core
+        noteDB.deleteAll()
+    }
+
     void "default endpoint answers"() {
         when:
         def response = get(baseUrl)
