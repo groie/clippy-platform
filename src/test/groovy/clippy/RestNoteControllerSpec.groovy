@@ -36,4 +36,9 @@ class RestNoteControllerSpec extends Specification {
             contentType == "text/plain"
         }
     }
+
+    void "failing build for travis test"() {
+        expect:
+        false
+    }
 }
