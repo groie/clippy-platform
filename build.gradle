@@ -12,11 +12,11 @@ plugins {
     id "fi.evident.beanstalk" version "0.0.5"
 }
 
-apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
 apply plugin: 'war'
+apply plugin: 'groovy'
 
 def bn = 'clippy-platform'
 def ver = '0.1.2'
@@ -65,7 +65,10 @@ dependencies {
 
     compile("org.dalesbred:dalesbred:1.0.0")
     compile("org.hsqldb:hsqldb")
-    testCompile("junit:junit")
+
+    testCompile 'org.springframework:spring-test'
+    testCompile 'org.codehaus.groovy:groovy-all'
+    testCompile("org.spockframework:spock-spring:1.0-groovy-2.4")
 }
 
 task wrapper(type: Wrapper) {
