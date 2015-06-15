@@ -11,7 +11,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by ilkkaharmanen on 11.06.2015.
  */
 @RestController
-public class NoteController {
+@RequestMapping("/api/v1")
+public class RestNoteController {
 
     @Autowired
     private NoteDB noteDB;
