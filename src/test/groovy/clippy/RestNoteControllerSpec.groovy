@@ -8,6 +8,7 @@ import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Specification
 
 import static com.jayway.restassured.RestAssured.get
+import static com.jayway.restassured.RestAssured.given
 
 /**
  * Created by ilkkaharmanen on 15.06.2015.
@@ -72,8 +73,39 @@ class RestNoteControllerSpec extends Specification {
             getString("value") == "savedvalue"
             getInt("version") == 0
         }
-
     }
 
+    void "updating or creating a note over api"() {
+        when:
+        def response = given().contentType("application/json")
+                              .body(new Note("postingnote", "postingvalue", 0))
+                              .post("${baseUrl}postingnote")
+        then:
+        with(response) {
+            statusCode == 200
+            contentType ==~ /application\/json.*/
+        }
+
+        with(response.jsonPath()) {
+            getString("key") == "postingnote"
+            getString("value") == "postingvalue"
+            getInt("version") == 0
+        }
+    }
+
+
+    void "updating with old version number fails"() {
+        when:
+        def note = noteDB.saveNote(new Note("savednote", "savedvalue", 1))
+        def oldNote = new Note(note.key, note.value, 0)
+        def response = given().contentType("application/json")
+                .body(oldNote)
+                .post("${baseUrl}savednote")
+        then:
+        with(response) {
+            statusCode == 409
+            contentType ==~ /application\/json.*/
+        }
+    }
 
 }

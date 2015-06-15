@@ -23,7 +23,7 @@ public class NoteDB {
     }
 
     public Note saveNote(Note note) {
-        database.update("INSERT INTO note values(?,?,?)", note.getKey(), note.getValue(), 0);
+        database.update("INSERT INTO note values(?,?,?)", note.getKey(), note.getValue(), note.getVersion());
 
         return getNote(note.getKey());
     }
@@ -34,7 +34,7 @@ public class NoteDB {
         if (oldNote == null) {
             return saveNote(note);
         } else if (!Objects.equals(oldNote.getVersion(), note.getVersion())) {
-            throw new IllegalArgumentException("Trying to update old version");
+            throw new StaleNoteException();
         } else {
             int updates = database.update("UPDATE note SET value = ?, version = ? WHERE key = ? and version = ?", note.getValue(), note.getVersion().intValue() + 1, note.getKey(), note.getVersion());
             return getNote(note.getKey());
