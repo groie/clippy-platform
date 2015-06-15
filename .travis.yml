@@ -8,5 +8,5 @@ cache:
 
 after_success:
   - if [ ! -d "~/.aws" ]; then mkdir ~/.aws; fi
-  - printf "[clippy-platform]\naws_access_key_id=%s\naws_secret_access_key=%s\n", $naws_access_key_id $aws_secret_access_key > ~/.aws/credentials
+  - printf "[clippy-platform]\naws_access_key_id=%s\naws_secret_access_key=%s\n", $aws_access_key_id $aws_secret_access_key > ~/.aws/credentials
   - ./gradlew deployProduction
