@@ -7,4 +7,4 @@ cache:
   - $HOME/.gradle/caches/
 
 after_success:
-  - test ${TRAVIS_BRANCH} = master && ./gradlew -Daws.accessKeyId=$AWS_ACCESS_KEY_ID -Daws.secretKey=$AWS_SECRET_ACCESS_KEY deployProduction --stacktrace
+  - test ${TRAVIS_BRANCH} = master && ./gradlew -D"aws.accessKeyId"=$AWS_ACCESS_KEY_ID -D"aws.secretKey"=$AWS_SECRET_ACCESS_KEY deployProduction
