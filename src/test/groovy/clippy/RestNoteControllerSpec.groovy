@@ -37,8 +37,4 @@ class RestNoteControllerSpec extends Specification {
         }
     }
 
-    void "failing build for travis test"() {
-        expect:
-        false
-    }
 }
