@@ -1,5 +1,6 @@
 package clippy
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.IntegrationTest
 import org.springframework.boot.test.SpringApplicationConfiguration
@@ -16,14 +17,23 @@ import static com.jayway.restassured.RestAssured.get
 @IntegrationTest("server.port:0")
 class RestNoteControllerSpec extends Specification {
 
+    @Autowired
+    NoteDB noteDB;
+
     @Value('${local.server.port}')
     int port
+    def urlPrefix = "http://localhost";
     def path = "/api/v1/"
+
+    def baseUrl;
+
+    void setup() {
+        baseUrl = "${urlPrefix}:${port}${path}"
+    }
 
     void "default endpoint answers"() {
         when:
-        def url = "http://localhost:${port}${path}"
-        def response = get(url)
+        def response = get(baseUrl)
         then:
         with(response) {
             statusCode == 200
@@ -33,7 +43,7 @@ class RestNoteControllerSpec extends Specification {
 
     void "read non-existing note creates new one and returns it"() {
         when:
-        def response = get("http://localhost:${port}${path}newnote")
+        def response = get("${baseUrl}newnote")
         then:
         with(response) {
             statusCode == 200
@@ -46,4 +56,24 @@ class RestNoteControllerSpec extends Specification {
             getInt("version") == 0
         }
     }
+
+    void "reading existing note is returned"() {
+        when:
+        noteDB.saveNote(new Note("savednote", "savedvalue", 0))
+        def response = get("${baseUrl}savednote")
+        then:
+        with(response) {
+            statusCode == 200
+            contentType ==~ /application\/json.*/
+        }
+
+        with(response.jsonPath()) {
+            getString("key") == "savednote"
+            getString("value") == "savedvalue"
+            getInt("version") == 0
+        }
+
+    }
+
+
 }
