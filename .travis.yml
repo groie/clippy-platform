@@ -6,6 +6,6 @@ cache:
   - $HOME/.m2
   - $HOME/.gradle/caches/
 env:
-  - AWS_ACCESS_KEY_ID=foo AWS_SECRET_KEY=bar
+  - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_KEY=$AWS_SECRET_KEY
 after_success:
   - test ${TRAVIS_BRANCH} = master && ./gradlew deployProduction
